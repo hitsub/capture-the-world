@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: d0e9e9a886d8efe48886ff5eefb06799
+timeCreated: 1480820657
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: 365Letters
+  fontNames:
+  - 365Letters
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
