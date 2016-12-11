@@ -162,7 +162,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 		void OnTriggerEnter (Collider col){
 			if (col.gameObject.tag == "Crystal") {
 				manager.CatchCrystal ();
-				Destroy (col.gameObject);
+				col.gameObject.transform.parent.gameObject.GetComponent<CrystalScript> ().Kill ();
 				SE.Play ();
 
 			}
