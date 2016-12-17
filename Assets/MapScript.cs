@@ -27,7 +27,7 @@ public class MapScript : MonoBehaviour {
 		mepos = new Vector3 (size.x * (pos.x / real.x) - size.x/2, size.y * (pos.z / real.y) - size.y/2, 0);
 		rectMe.anchoredPosition = new Vector3(-mepos.x, -mepos.y,0);
 
-		angle =  Vector3.Angle (new Vector3 (0, 0, 0f) - new Vector3 (0, 0, -10f), Character.transform.forward);
-		rectMe.rotation = angle;
+		//angle =  Vector3.Angle (new Vector3 (0, 0, 0f) - new Vector3 (0, 0, -10f), Character.transform.forward);
+		//rectMe.rotation = angle;
 	}
 }
