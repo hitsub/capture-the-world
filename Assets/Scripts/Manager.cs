@@ -24,7 +24,7 @@ public class Manager : MonoBehaviour {
 		crystalPositions = new Vector3[100];
 		for (int i = 0; i < json ["crystal"].Count; i++) {
 			//生成
-			GameObject tmp = Instantiate (crystal) as GameObject;
+			GameObject tmp = Instantiate <GameObject>(crystal);
 			tmp.transform.SetParent (parent.transform);
 			crystalPositions[i] = new Vector3 ((float)json ["crystal"] [i] ["pos"] [0].Get<double> (), (float)json ["crystal"] [i] ["pos"] [1].Get<double> (), (float)json ["crystal"] [i] ["pos"] [2].Get<double> ());
 			tmp.transform.position = crystalPositions [i];

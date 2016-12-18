@@ -37,13 +37,7 @@ public class CrystalScript : MonoBehaviour {
 		if (text.enabled != nearPlayer)
 			text.enabled = nearPlayer;
 		if (text.enabled && Mathf.Abs (angle) < 90) {
-			/*
-			Vector3 screenPos = camera.WorldToScreenPoint(transform.position);
-			//print (name+" ("+(int)screenPos.x+","+(int)screenPos.y+")"+"  ("+Screen.width+","+Screen.height+")");
-			RectTransformUtility.ScreenPointToLocalPointInRectangle (parentRect, screenPos, camera, out localPos);
-			rect.position = localPos;
-			print (RectTransformUtility.ScreenPointToLocalPointInRectangle (parentRect, screenPos, camera, out localPos));
-			*/
+			
 			Vector2 ViewportPosition = camera.WorldToViewportPoint (this.gameObject.transform.position);
 			Vector2 WorldObject_ScreenPosition = new Vector2 (
 				                                     ((ViewportPosition.x * canvasRect.sizeDelta.x) - (canvasRect.sizeDelta.x * 0.5f)),
