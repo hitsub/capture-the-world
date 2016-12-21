@@ -44,7 +44,7 @@ public class MapScript : MonoBehaviour {
 			Vector3 crystalPos = new Vector3 ((float)json ["crystal"] [i] ["pos"] [0].Get<double> (), (float)json ["crystal"] [i] ["pos"] [1].Get<double> (), (float)json ["crystal"] [i] ["pos"] [2].Get<double> ());;
 			Vector3 crystalMapPos = new Vector3 (size.x * (crystalPos.x / real.x) - size.x/2, size.y * (crystalPos.z / real.y) - size.y/2, 0);
 			tmp.GetComponent<RectTransform> ().anchoredPosition = new Vector3 (-crystalMapPos.x, -crystalMapPos.y, 0);
-			tmp.transform.localScale = new Vector3 (1.5f, 1.5f, 1f);
+			tmp.transform.localScale = new Vector3 (0.6f, 0.6f, 0.6f);
 			rectMapCrystals[i] = tmp.GetComponent<RectTransform> ();
 		}
 

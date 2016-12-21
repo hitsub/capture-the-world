@@ -3,26 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum Flag{
+	None, Blue, Green
+}
+
 public class CrystalScript : MonoBehaviour {
 	GameObject	Character;
 	Camera camera;
 	RectTransform rect;
+	RectTransform canvasRect;
 	Text text;
 	bool nearPlayer = false; //保険
 	Vector2 localPos;
-	RectTransform canvasRect;
 	bool ready = false;
 	int dis;
 	float angle;
+
+	//クリスタルのステータス
+	public float energy = 1f;
+	public Flag flag = Flag.None;
+	public int flagNum = 0;
+
+
 	// Use this for initialization
 	void Start () {
+		GameObject canvas = GameObject.Find ("CrystalNameCanvas");
 		Character = GameObject.Find ("Character");
 		camera = GameObject.Find ("FirstPersonCharacter").GetComponent<Camera> ();
-		canvasRect = GameObject.Find ("Canvas").GetComponent<RectTransform> ();
+		canvasRect = canvas.GetComponent<RectTransform> ();
 
 		GameObject namePrefab = Resources.Load ("Prefabs/CrystalNamePrefab") as GameObject;
 		GameObject name = Instantiate (namePrefab) as GameObject;
-		name.transform.SetParent (GameObject.Find ("Canvas").transform);
+		name.transform.SetParent (canvas.transform);
 		name.name = "C:"+this.gameObject.name;
 		rect = name.GetComponent<RectTransform> ();
 		text = name.GetComponent<Text> ();
@@ -71,7 +83,7 @@ public class CrystalScript : MonoBehaviour {
 	}
 
 	public void Kill(){
-		Destroy (text.gameObject);
-		Destroy (this.gameObject);
+		//Destroy (text.gameObject);
+		//Destroy (this.gameObject);
 	}
 }
