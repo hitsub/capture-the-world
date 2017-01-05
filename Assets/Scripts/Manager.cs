@@ -1,16 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityStandardAssets.CrossPlatformInput;
 using UnityEngine;
 using UnityEngine.UI;
 using MiniJSON;
 
 public class Manager : MonoBehaviour {
 	JsonNode json;
-	int catchedCrystalNum = 0;
 	Dictionary<string,Vector3> crystalPos = new Dictionary<string, Vector3>();
-	Text showNum;
-	public GameObject crystalnameParentCanvas;
 	public Vector3[] crystalPositions;
+
+	[SerializeField]Text textEnergy;
+	[SerializeField]Image imageEnergy;
+	public int energy = 1000;
+
 	// Use this for initialization
 	void Start () {
 
@@ -32,20 +35,20 @@ public class Manager : MonoBehaviour {
 			//情報取得
 			crystalPos.Add (tmp.name,tmp.transform.position);
 		}
-
-		//表示準備
-		showNum = GameObject.Find("CrystalNum").GetComponent<Text>();
-		showNum.text = "" + catchedCrystalNum + "/" + crystalPos.Count;
+			
+		//自陣営の色適用
+		GameObject.Find("EnergyGuage").GetComponent<Image>().color = FlagColor.Color(FlagType.Blue);
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		textEnergy.text = energy.ToString ();
+		imageEnergy.fillAmount = (float)energy / 1000;
 	}
 
 	public void CatchCrystal(){
-		catchedCrystalNum++;
-		showNum.text = "" + catchedCrystalNum + "/" + crystalPos.Count;
+		//catchedCrystalNum++;
+		//showNum.text = "" + catchedCrystalNum + "/" + crystalPos.Count;
 	}
 }

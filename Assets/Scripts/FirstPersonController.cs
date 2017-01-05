@@ -77,7 +77,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
             if (!m_Jump)
                 m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
 			//ブーストフラグ
-			m_Boost = CrossPlatformInputManager.GetButton ("Jump");
+			m_Boost = (CrossPlatformInputManager.GetButton ("Jump")&&(manager.energy>0));
+			if (m_Boost)
+				manager.energy--;
 			if (m_Boost && !(Jet.isPlaying))
 				Jet.Play ();
 			if (!m_Boost)

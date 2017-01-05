@@ -64,7 +64,7 @@ public class MapScript : MonoBehaviour {
 
 		//マップの回転
 		transform.eulerAngles = new Vector3 (0f, 0f, charaAngle.y);
-		rectMapVector.eulerAngles = new Vector3 (0f, 0f, -charaAngle.y);
+		rectMapVector.eulerAngles = new Vector3 (0f, 0f, charaAngle.y);
 
 		//マップ位置
 		pos = Character.transform.position;
