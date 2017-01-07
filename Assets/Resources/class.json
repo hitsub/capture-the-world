@@ -35,7 +35,7 @@
 	"Recon":{
         "Energy":500,
         "WalkSpeed":7,
-		"RunSpeed":10,
+		"RunSpeed":8,
         "Mileage":10,
 		"RecoberyCooltime":1,
         "Recovery":5,
