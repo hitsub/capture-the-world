@@ -21,7 +21,8 @@ public class CrystalScript : MonoBehaviour {
 	float panelSize;
 
 	//クリスタルのステータス初期化
-	public float energy = 1f;
+	public int energy = 0;
+	const int energyMax = 100;
 	public FlagType flag = FlagType.None;
 	public int flagNum = 0;
 
@@ -76,6 +77,7 @@ public class CrystalScript : MonoBehaviour {
 			distanceCameraCrystal = (int)Vector3.Distance (Character.transform.position, transform.position);
 			textDistance.text = distanceCameraCrystal + "m";
 			panelSize = 1f - (0.5f * (((float)distanceCameraCrystal) / 60f));
+			imageGuage.fillAmount = (float)energy / energyMax;
 			rect.localScale = new Vector3 (panelSize, panelSize, panelSize);
 		}
 
@@ -117,6 +119,10 @@ public class CrystalScript : MonoBehaviour {
 		Tail.startColor = c;
 		Burner.startColor = new Color (c.r, c.g, c.b, 0.313f);
 		Body.material.SetColor ("_CristalColor", c);
+	}
+
+	public void InjectEnergy(int amount, FlagType side){
+	
 	}
 
 	public void Kill(){
