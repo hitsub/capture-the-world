@@ -12,8 +12,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
     public class FirstPersonController : MonoBehaviour
     {
         [SerializeField] private bool m_IsWalking;
-        [SerializeField] private float m_WalkSpeed;
-        [SerializeField] private float m_RunSpeed;
+        private float m_WalkSpeed;
+        private float m_RunSpeed;
         [SerializeField] [Range(0f, 1f)] private float m_RunstepLenghten;
         [SerializeField] private float m_JumpSpeed;
         [SerializeField] private float m_StickToGroundForce;
@@ -50,6 +50,18 @@ namespace UnityStandardAssets.Characters.FirstPerson
 		private Rigidbody rigid;
 		private Manager manager;
 
+		[SerializeField] PlayerData pData;
+		[SerializeField] int playerNum;
+
+		ShotAreaTrigger shotArea;
+
+		GameObject tmpCrystal; //現在の操作対象
+
+		//ステータス
+		public float Energy;
+		int MaxEnergy, Mileage, RecoveryCooltime, Recovery, WalkRecoveryBonus, Damage, FireRate;
+		float nonActiveTime = 0f; //走らないかつブーストしてない時間
+
         // Use this for initialization
         private void Start()
         {
@@ -65,6 +77,20 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
 			rigid = this.gameObject.GetComponent<Rigidbody> ();
 			manager = GameObject.Find("Manager").GetComponent<Manager>();
+			shotArea = transform.FindChild ("ShotArea").gameObject.GetComponent<ShotAreaTrigger> ();
+
+			//ステータス初期化
+			Energy = pData.energy [playerNum];
+			MaxEnergy = (int)Energy;
+			m_WalkSpeed = pData.WalkSpeed [playerNum];
+			m_RunSpeed = pData.RunSpeed [playerNum];
+			Mileage = pData.Mileage [playerNum];
+			RecoveryCooltime = pData.RecoveryCooltime [playerNum];
+			Recovery = pData.Recovery [playerNum];
+			WalkRecoveryBonus = pData.WalkRecoveryBonus [playerNum];
+			Damage = pData.Damage [playerNum];
+			FireRate = pData.FireRate [playerNum];
+
         }
 
 
@@ -77,27 +103,46 @@ namespace UnityStandardAssets.Characters.FirstPerson
             if (!m_Jump)
                 m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
 			//ブーストフラグ
-			m_Boost = (CrossPlatformInputManager.GetButton ("Jump")&&(manager.energy>0));
-			if (m_Boost)
-				manager.energy--;
+			m_Boost = (CrossPlatformInputManager.GetButton ("Jump") && (Energy > 0));
 			if (m_Boost && !(Jet.isPlaying))
 				Jet.Play ();
 			if (!m_Boost)
 				Jet.Stop ();
 
-            if (!m_PreviouslyGrounded && m_CharacterController.isGrounded)
-            {
+			if (!m_PreviouslyGrounded && m_CharacterController.isGrounded){
                 StartCoroutine(m_JumpBob.DoBobCycle());
                 PlayLandingSound();
                 m_MoveDir.y = 0f;
                 m_Jumping = false;
             }
-            if (!m_CharacterController.isGrounded && !m_Jumping && m_PreviouslyGrounded)
-            {
+			if (!m_CharacterController.isGrounded && !m_Jumping && m_PreviouslyGrounded) {
                 m_MoveDir.y = 0f;
             }
 
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
+
+			if (Input.GetKey (KeyCode.Mouse0) && shotArea.isShot) {
+
+			}
+
+			//エネルギー消費
+			if (m_Boost)
+				Energy -= (pData.Mileage [playerNum] * Time.deltaTime);
+			if (!m_IsWalking)
+				Energy -= 0.7f * (pData.Mileage [playerNum] * Time.deltaTime);
+			//エネルギー自然回復
+			if (m_IsWalking && !m_Boost)
+				nonActiveTime += 1f * Time.deltaTime;
+			else
+				nonActiveTime = 0;
+			if (nonActiveTime > RecoveryCooltime)
+					Energy += Recovery * Time.deltaTime;
+
+			//エネルギーの下限上限
+			if (Energy < 0)
+				Energy = 0;
+			if (Energy > MaxEnergy)
+				Energy = MaxEnergy;
         }
 
 

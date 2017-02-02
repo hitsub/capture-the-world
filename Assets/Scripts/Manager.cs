@@ -4,6 +4,7 @@ using UnityStandardAssets.CrossPlatformInput;
 using UnityEngine;
 using UnityEngine.UI;
 using MiniJSON;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class Manager : MonoBehaviour {
 	JsonNode json;
@@ -12,7 +13,7 @@ public class Manager : MonoBehaviour {
 
 	[SerializeField]Text textEnergy;
 	[SerializeField]Image imageEnergy;
-	public int energy = 1000;
+	[SerializeField]FirstPersonController[] fpsController;
 
 	// Use this for initialization
 	void Start () {
@@ -43,8 +44,8 @@ public class Manager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		textEnergy.text = energy.ToString ();
-		imageEnergy.fillAmount = (float)energy / 1000;
+		textEnergy.text = fpsController[0].Energy.ToString ("F0");
+		imageEnergy.fillAmount = fpsController[0].Energy / 1000;
 	}
 
 	public void CatchCrystal(){

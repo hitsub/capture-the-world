@@ -54,48 +54,54 @@ public class ScreenSelect : MonoBehaviour {
 		transform.Rotate (0, -5f * Time.deltaTime, 0);
 
 		//キー入力
-		if (Input.GetKeyDown (KeyCode.UpArrow) && (p1SelectPos != 0)) {
-			p1SelectPos--;
-			iTween.ValueTo (gameObject, iTween.Hash (
-				"from", 100f - 50f * (p1SelectPos + 1), 
-				"to", 100f - 50f * (p1SelectPos), 
-				"time", animPositionTime, 
-				"easetype", animPositionEase, 
-				"onupdate", "SetP1SelectPos"
-			));
-			for (int i = 0; i < classStat.Length; i++) {
+		if (p1SelectFlag) {
+			if (Input.GetKeyDown (KeyCode.UpArrow) && (p1SelectPos != 0)) {
+				p1SelectPos--;
 				iTween.ValueTo (gameObject, iTween.Hash (
-					"from", (float)json [className [p1SelectPos + 1]] [classStat [i]].Get<long> () / classMax [i], 
-					"to", (float)json [className [p1SelectPos]] [classStat [i]].Get<long> () / classMax [i], 
-					"time", animGuageTime, 
-					"easetype", animGuageEase, 
-					"onupdate", "SetP1Guage" + classFunc [i]
+					"from", 100f - 50f * (p1SelectPos + 1), 
+					"to", 100f - 50f * (p1SelectPos), 
+					"time", animPositionTime, 
+					"easetype", animPositionEase, 
+					"onupdate", "SetP1SelectPos"
 				));
+				for (int i = 0; i < classStat.Length; i++) {
+					iTween.ValueTo (gameObject, iTween.Hash (
+						"from", (float)json [className [p1SelectPos + 1]] [classStat [i]].Get<long> () / classMax [i], 
+						"to", (float)json [className [p1SelectPos]] [classStat [i]].Get<long> () / classMax [i], 
+						"time", animGuageTime, 
+						"easetype", animGuageEase, 
+						"onupdate", "SetP1Guage" + classFunc [i]
+					));
+				}
 			}
-		}
-		if (Input.GetKeyDown (KeyCode.DownArrow) && (p1SelectPos != 3)) {
-			p1SelectPos++;
-			iTween.ValueTo (gameObject, iTween.Hash (
-				"from", 100f - 50f * (p1SelectPos - 1), 
-				"to", 100f - 50f * (p1SelectPos), 
-				"time", animPositionTime, 
-				"easetype", animPositionEase, 
-				"onupdate", "SetP1SelectPos"
-			));
-			for (int i = 0; i < classStat.Length; i++) {
+			if (Input.GetKeyDown (KeyCode.DownArrow) && (p1SelectPos != 3)) {
+				p1SelectPos++;
 				iTween.ValueTo (gameObject, iTween.Hash (
-					"from", (float)json [className [p1SelectPos - 1]] [classStat [i]].Get<long> () / classMax [i], 
-					"to", (float)json [className [p1SelectPos]] [classStat [i]].Get<long> () / classMax [i], 
-					"time", animGuageTime, 
-					"easetype", animGuageEase, 
-					"onupdate", "SetP1Guage" + classFunc [i]
+					"from", 100f - 50f * (p1SelectPos - 1), 
+					"to", 100f - 50f * (p1SelectPos), 
+					"time", animPositionTime, 
+					"easetype", animPositionEase, 
+					"onupdate", "SetP1SelectPos"
 				));
+				for (int i = 0; i < classStat.Length; i++) {
+					iTween.ValueTo (gameObject, iTween.Hash (
+						"from", (float)json [className [p1SelectPos - 1]] [classStat [i]].Get<long> () / classMax [i], 
+						"to", (float)json [className [p1SelectPos]] [classStat [i]].Get<long> () / classMax [i], 
+						"time", animGuageTime, 
+						"easetype", animGuageEase, 
+						"onupdate", "SetP1Guage" + classFunc [i]
+					));
+				}
 			}
-		}
-		if (Input.GetKeyDown (KeyCode.Return) && p1SelectFlag) {
-			p1SelectFlag = false;
-			p1Stat.text = "Waiting";
-
+			if (Input.GetKeyDown (KeyCode.Return)) {
+				p1SelectFlag = false;
+				p1Stat.text = "Waiting";
+			}
+		} else {
+			if (Input.GetKeyDown (KeyCode.Escape)) {
+				p1SelectFlag = true;
+				p1Stat.text = "Selecting";
+			}
 		}
 	}
 	//P1
