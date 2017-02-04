@@ -22,7 +22,8 @@ public class CrystalScript : MonoBehaviour {
 
 	//クリスタルのステータス初期化
 	public int energy = 0;
-	const int energyMax = 100;
+	const int energyMax = 250;
+	public FlagType energyColor = FlagType.None;
 	public FlagType flag = FlagType.None;
 	public int flagNum = 0;
 
@@ -31,6 +32,7 @@ public class CrystalScript : MonoBehaviour {
 	ParticleSystem CoreGlow;
 	ParticleSystem Tail;
 	ParticleSystem Burner;
+	GameObject[] ShockWave = new GameObject[2];
 
 
 	// Use this for initialization
@@ -40,6 +42,8 @@ public class CrystalScript : MonoBehaviour {
 		camera = GameObject.Find ("FirstPersonCharacter").GetComponent<Camera> ();
 		canvasRect = canvas.GetComponent<RectTransform> ();
 
+		ShockWave[0] = Resources.Load ("Prefabs/ShockWaveBlue") as GameObject;
+		ShockWave[1] = Resources.Load ("Prefabs/ShockWaveGreen") as GameObject;
 		GameObject namePrefab = Resources.Load ("Prefabs/CrystalNamePanel") as GameObject;
 		GameObject name = Instantiate (namePrefab) as GameObject;
 		name.transform.SetParent (canvas.transform);
@@ -119,10 +123,45 @@ public class CrystalScript : MonoBehaviour {
 		Tail.startColor = c;
 		Burner.startColor = new Color (c.r, c.g, c.b, 0.313f);
 		Body.material.SetColor ("_CristalColor", c);
+
+		if (flag == FlagType.Blue)
+			Instantiate (ShockWave [0], transform.position, Quaternion.identity);
+		if (flag == FlagType.Green)
+			Instantiate (ShockWave [1], transform.position, Quaternion.identity);
 	}
 
-	public void InjectEnergy(int amount, FlagType side){
-	
+	FlagType OtherSideFlag(FlagType flag){
+		return (flag == FlagType.Blue) ? FlagType.Green : FlagType.Blue;
+	}
+
+	public InjectResult InjectEnergy(int amount, FlagType side){
+		InjectResult result = new InjectResult();
+		//自陣営
+		if (flag == side || (flag == FlagType.None && (energyColor == FlagType.None || energyColor == side))) {
+			imageGuage.color = FlagColor.Color (side);
+			if (energy >= energyMax)
+				return result;
+			energy += amount;
+			if (energy >= energyMax) {
+				energy = energyMax;
+				ChangeFlagColor (side);
+				result.Capture = true;
+			}
+			result.Result = true;
+			return result;
+		}
+		//敵陣営
+		if (flag != side || (flag == FlagType.None && energyColor == OtherSideFlag(side))) {
+			energy -= amount;
+			if (energy >= 0) {
+				energy = 0;
+				ChangeFlagColor (FlagType.None);
+				result.Destroy = true;
+			}
+			result.Result = true;
+			return result;
+		}
+		return result;
 	}
 
 	public void Kill(){

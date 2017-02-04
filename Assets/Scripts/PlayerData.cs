@@ -13,6 +13,7 @@ public class PlayerData : MonoBehaviour {
 	public int[] WalkRecoveryBonus;
 	public int[] Damage;
 	public int[] FireRate;
+	public FlagType[] Team;
 
 	// Use this for initialization
 	void Start () {
@@ -24,7 +25,9 @@ public class PlayerData : MonoBehaviour {
 		Recovery = new int[] { 5, 5 };
 		WalkRecoveryBonus = new int[] { 2, 2 };
 		Damage = new int[]{ 10, 10 };
-		FireRate = new int[] { 100, 100 };
+		FireRate = new int[] { 200, 200 };
+
+		Team = new FlagType[]{ FlagType.Blue, FlagType.Green };
 
 		DontDestroyOnLoad (this.gameObject);
 	}

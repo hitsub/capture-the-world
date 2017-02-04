@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public enum FlagType{
 	None, Blue, Green
@@ -28,8 +26,21 @@ static public class FlagColor {
 	}
 }
 
+public class InjectResult {
+	public bool Result = false, Destroy = false, Capture = false;
+}
+
 //プレイヤーデータクラス
 public class Player{
 	public Vector3 Position;
 	public Vector3 Angle;
+}
+
+//クリスタルステータスクラス
+public class Crystal{
+	FlagType crystalColor = FlagType.None;
+	FlagType guageColor = FlagType.None;
+	int Captures = 0;
+	int[] Energy = new int[8];
+
 }

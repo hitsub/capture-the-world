@@ -8,7 +8,7 @@
         "Recovery":5,
 		"WalkRecoveryBonus":2,
         "Damage":10,
-        "FireRate":100
+        "FireRate":200
     },
 	"Bomber":{
         "Energy":800,

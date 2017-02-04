@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using MiniJSON;
 
 public class ScreenSelect : MonoBehaviour {
@@ -101,6 +102,9 @@ public class ScreenSelect : MonoBehaviour {
 			if (Input.GetKeyDown (KeyCode.Escape)) {
 				p1SelectFlag = true;
 				p1Stat.text = "Selecting";
+			}
+			if (Input.GetKeyDown (KeyCode.Return)) {
+				SceneManager.LoadScene ("Play");
 			}
 		}
 	}

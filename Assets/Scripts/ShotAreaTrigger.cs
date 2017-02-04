@@ -13,4 +13,5 @@ public class ShotAreaTrigger : MonoBehaviour {
 		if (c.gameObject.name == "PhysicsTrigger")
 			isShot = false;
 	}
+
 }

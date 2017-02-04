@@ -61,6 +61,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
 		public float Energy;
 		int MaxEnergy, Mileage, RecoveryCooltime, Recovery, WalkRecoveryBonus, Damage, FireRate;
 		float nonActiveTime = 0f; //走らないかつブーストしてない時間
+		float shootCoolTime = 0f;
+		FlagType side;
 
         // Use this for initialization
         private void Start()
@@ -90,6 +92,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
 			WalkRecoveryBonus = pData.WalkRecoveryBonus [playerNum];
 			Damage = pData.Damage [playerNum];
 			FireRate = pData.FireRate [playerNum];
+			side = pData.Team [playerNum];
+
+			shootCoolTime = 60f / pData.FireRate [playerNum];
 
         }
 
@@ -123,7 +128,13 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
 
 			if (Input.GetKey (KeyCode.Mouse0) && shotArea.isShot) {
-
+				shootCoolTime += 1f * Time.deltaTime;
+				if (shootCoolTime >= 60f / pData.FireRate [playerNum]) {
+					shootCoolTime = 0;
+					InjectResult res = shotArea.col.gameObject.transform.parent.gameObject.GetComponent<CrystalScript> ().InjectEnergy (pData.Damage [playerNum], side);
+					if (res.Result)
+						Energy -= pData.Damage [playerNum];
+				}
 			}
 
 			//エネルギー消費
