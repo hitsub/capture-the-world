@@ -29,9 +29,10 @@ public class ScreenSelect : MonoBehaviour {
 	string[] className = { "Assalt", "Bomber", "Charger", "Recon" };
 	string[] classStat = { "Damage", "FireRate", "RunSpeed", "Energy", "Recovery" };
 	string[] classFunc = { "Power", "FireRate", "Speed", "Energy", "Recovery" };
-	int[] classMax = { 300, 150, 15, 2500, 10 };
+	int[] classMax = { 200, 200, 10, 2500, 20 };
 
 	JsonNode json;
+	bool p2stickback = true;
 
 	//Animation Const.
 	const string animGuageEase = "easeOutCubic";
@@ -47,13 +48,16 @@ public class ScreenSelect : MonoBehaviour {
 			//print (i + ":" + (float)json ["Assalt"] [classStat [i]].Get<long> () / classMax [i]+"\n"+json ["Assalt"] [classStat [i]].Get<long> ()+" / "+classMax [i]);
 			iTween.ValueTo (gameObject, iTween.Hash ("from", 0f, "to", (float)json ["Assalt"] [classStat [i]].Get<long> () / classMax [i], "time", 1f, "easetype", animGuageEase, "onupdate", "SetP1Guage" + classFunc [i]));
 		}
+		for (int i = 0; i < classStat.Length; i++) {
+			//print (i + ":" + (float)json ["Assalt"] [classStat [i]].Get<long> () / classMax [i]+"\n"+json ["Assalt"] [classStat [i]].Get<long> ()+" / "+classMax [i]);
+			iTween.ValueTo (gameObject, iTween.Hash ("from", 0f, "to", (float)json ["Assalt"] [classStat [i]].Get<long> () / classMax [i], "time", 1f, "easetype", animGuageEase, "onupdate", "SetP2Guage" + classFunc [i]));
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		//カメラの回転
 		transform.Rotate (0, -5f * Time.deltaTime, 0);
-
 		//キー入力
 		if (p1SelectFlag) {
 			if (Input.GetKeyDown (KeyCode.UpArrow) && (p1SelectPos != 0)) {
@@ -104,10 +108,111 @@ public class ScreenSelect : MonoBehaviour {
 				p1Stat.text = "Selecting";
 			}
 			if (Input.GetKeyDown (KeyCode.Return)) {
-				SceneManager.LoadScene ("Play");
+				SetStatus ();
+				SceneManager.LoadScene ("Split");
 			}
 		}
+		if (p2SelectFlag) {
+			if (Input.GetAxis ("Axis8") <= 0.3f && Input.GetAxis ("Axis8") >= -0.3f && !p2stickback)
+				p2stickback = true;
+			if (Input.GetAxis("Axis8")>=0.9f && p2stickback && (p2SelectPos != 0)) {
+				p2SelectPos--;
+				p2stickback = false;
+				iTween.ValueTo (gameObject, iTween.Hash (
+					"from", 100f - 50f * (p2SelectPos + 1), 
+					"to", 100f - 50f * (p2SelectPos), 
+					"time", animPositionTime, 
+					"easetype", animPositionEase, 
+					"onupdate", "SetP2SelectPos"
+				));
+				for (int i = 0; i < classStat.Length; i++) {
+					iTween.ValueTo (gameObject, iTween.Hash (
+						"from", (float)json [className [p2SelectPos + 1]] [classStat [i]].Get<long> () / classMax [i], 
+						"to", (float)json [className [p2SelectPos]] [classStat [i]].Get<long> () / classMax [i], 
+						"time", animGuageTime, 
+						"easetype", animGuageEase, 
+						"onupdate", "SetP2Guage" + classFunc [i]
+					));
+				}
+			}
+			if (Input.GetAxis("Axis8")<=-0.9f && p2stickback && (p2SelectPos != 3)) {
+				p2SelectPos++;
+				p2stickback = false;
+				//p2Select.anchoredPosition = new Vector2 (130, 100f - 50f * (p2SelectPos));
+
+				iTween.ValueTo (gameObject, iTween.Hash (
+					"from", 100f - 50f * (p2SelectPos - 1), 
+					"to", 100f - 50f * (p2SelectPos), 
+					"time", animPositionTime, 
+					"easetype", animPositionEase, 
+					"onupdate", "SetP2SelectPos"
+				));
+				for (int i = 0; i < classStat.Length; i++) {
+					iTween.ValueTo (gameObject, iTween.Hash (
+						"from", (float)json [className [p2SelectPos - 1]] [classStat [i]].Get<long> () / classMax [i], 
+						"to", (float)json [className [p2SelectPos]] [classStat [i]].Get<long> () / classMax [i], 
+						"time", animGuageTime, 
+						"easetype", animGuageEase, 
+						"onupdate", "SetP2Guage" + classFunc [i]
+					));
+				}
+			}
+			if (Input.GetKeyDown(KeyCode.JoystickButton1)) {
+				p2SelectFlag = false;
+				p2Stat.text = "Waiting";
+			}
+		} else {
+			if (Input.GetKeyDown (KeyCode.JoystickButton2)) {
+				p2SelectFlag = true;
+				p2Stat.text = "Selecting";
+			}
+		}
+		if (!p1SelectFlag && !p2SelectFlag) {
+			SetStatus ();
+			SceneManager.LoadScene ("Split");
+		}
 	}
+
+	void SetStatus(){
+		PlayerData pData = GameObject.Find ("PlayerData").GetComponent<PlayerData> ();
+		pData.energy = new int[] {
+			(int)json [className [p1SelectPos]] ["Energy"].Get<long> (),
+			(int)json [className [p2SelectPos]] ["Energy"].Get<long> ()
+		};
+		pData.WalkSpeed = new int[] {
+			(int)json [className [p1SelectPos]] ["WalkSpeed"].Get<long> (),
+			(int)json [className [p2SelectPos]] ["WalkSpeed"].Get<long> ()
+		};
+		pData.RunSpeed = new int[] {
+			(int)json [className [p1SelectPos]] ["RunSpeed"].Get<long> (),
+			(int)json [className [p2SelectPos]] ["RunSpeed"].Get<long> ()
+		};
+		pData.Mileage = new int[] {
+			(int)json [className [p1SelectPos]] ["Mileage"].Get<long> (),
+			(int)json [className [p2SelectPos]] ["Mileage"].Get<long> ()
+		};
+		pData.RecoveryCooltime = new int[] {
+			(int)json [className [p1SelectPos]] ["RecoveryCooltime"].Get<long> (),
+			(int)json [className [p2SelectPos]] ["RecoveryCooltime"].Get<long> ()
+		};
+		pData.Recovery = new int[] {
+			(int)json [className [p1SelectPos]] ["Recovery"].Get<long> (),
+			(int)json [className [p2SelectPos]] ["Recovery"].Get<long> ()
+		};
+		pData.WalkRecoveryBonus = new int[] {
+			(int)json [className [p1SelectPos]] ["WalkRecoveryBonus"].Get<long> (),
+			(int)json [className [p2SelectPos]] ["WalkRecoveryBonus"].Get<long> ()
+		};
+		pData.Damage = new int[] {
+			(int)json [className [p1SelectPos]] ["Damage"].Get<long> (),
+			(int)json [className [p2SelectPos]] ["Damage"].Get<long> ()
+		};
+		pData.FireRate = new int[] {
+			(int)json [className [p1SelectPos]] ["FireRate"].Get<long> (),
+			(int)json [className [p2SelectPos]] ["FireRate"].Get<long> ()
+		};
+	}
+
 	//P1
 	void SetP1SelectPos (float y){
 		p1Select.anchoredPosition = new Vector2 (-130, y);

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,7 +9,7 @@ public class MapScript : MonoBehaviour {
 	Image imageMap;
 	Image imageMe;
 
-	GameObject Character;
+	[SerializeField]GameObject Character;
 
 	Vector2 size = new Vector2 (1040f, 840f);
 	Vector2 real = new Vector2 (-343.7f, -281f); //3D座標変換用、北東基準
@@ -19,8 +20,13 @@ public class MapScript : MonoBehaviour {
 	int crystalSum;
 
 	RectTransform[] rectMapCrystals = new RectTransform[50];
-	RectTransform rectMap;
+	[SerializeField] RectTransform rectMap;
+	[SerializeField] Transform parent;
 	public RectTransform rectMapVector;
+	Image[] imageMapCrystals = new Image[50];
+
+	public Manager manager;
+	FlagType[] tmpCrystalColor = new FlagType[CrystalInfo.Num];
 
 	bool crystal = false;
 	// Use this for initialization
@@ -28,24 +34,22 @@ public class MapScript : MonoBehaviour {
 		imageMap = this.gameObject.GetComponent<Image>();
 		rectMap = GetComponent<RectTransform> ();
 
-		//imageMe = this.gameObject.transform.FindChild("Me").gameObject.GetComponent<Image>();
-		Character = GameObject.Find ("Character");
-
 		TextAsset text = Resources.Load ("map") as TextAsset;
 		JsonNode json = JsonNode.Parse (text.text);
 		crystalSum = json ["crystal"].Count;
 
 		//マップ上のクリスタル生成
 		GameObject	mapCrystal = Resources.Load ("Prefabs/mapCrystal") as GameObject;
-		Transform	parent = GameObject.Find ("Map").transform;
 		for (int i = 0; i < crystalSum; i++) {
 			GameObject tmp = Instantiate (mapCrystal) as GameObject;
 			tmp.transform.SetParent (parent);
-			Vector3 crystalPos = new Vector3 ((float)json ["crystal"] [i] ["pos"] [0].Get<double> (), (float)json ["crystal"] [i] ["pos"] [1].Get<double> (), (float)json ["crystal"] [i] ["pos"] [2].Get<double> ());;
-			Vector3 crystalMapPos = new Vector3 (size.x * (crystalPos.x / real.x) - size.x/2, size.y * (crystalPos.z / real.y) - size.y/2, 0);
+			Vector3 crystalPos = new Vector3 ((float)json ["crystal"] [i] ["pos"] [0].Get<double> (), (float)json ["crystal"] [i] ["pos"] [1].Get<double> (), (float)json ["crystal"] [i] ["pos"] [2].Get<double> ());
+			Vector3 crystalMapPos = new Vector3 (size.x * (crystalPos.x / real.x) - size.x / 2, size.y * (crystalPos.z / real.y) - size.y / 2, 0);
 			tmp.GetComponent<RectTransform> ().anchoredPosition = new Vector3 (-crystalMapPos.x, -crystalMapPos.y, 0);
-			tmp.transform.localScale = new Vector3 (0.6f, 0.6f, 0.6f);
-			rectMapCrystals[i] = tmp.GetComponent<RectTransform> ();
+			tmp.transform.localScale = new Vector3 (0.8f, 0.8f, 0.8f);
+			tmp.transform.FindChild ("Text").gameObject.GetComponent<Text> ().text = GetStringName (i);
+			rectMapCrystals [i] = tmp.GetComponent<RectTransform> ();
+			imageMapCrystals [i] = tmp.GetComponent<Image> ();
 		}
 
 	}
@@ -72,10 +76,25 @@ public class MapScript : MonoBehaviour {
 		rectMap.anchoredPosition = new Vector3 (0,0,0);
 		rectMap.pivot = new Vector2 (1 - pos.x / real.x,1 - pos.z / real.y);
 
-		//クリスタルの回転阻止
-		for (int i = 0; i < crystalSum; i++) {
+		for (int i = 0; i < CrystalInfo.Num; i++) {
+			//クリスタルの回転阻止
 			rectMapCrystals [i].eulerAngles = Vector3.zero;
+
+			//マップクリスタルの色管理
+			if (tmpCrystalColor[i] != manager.CrystalScripts [i].flagColor) {
+				imageMapCrystals [i].color = FlagColor.Color (manager.CrystalScripts [i].flagColor);
+			}
+			tmpCrystalColor[i] = manager.CrystalScripts [i].flagColor;
 		}
+	}
+		
+	string GetStringName(int index) {
+		string str = "";
+		do {
+			str = Convert.ToChar(index % 26 + 0x41) + str;
+		} while ((index = index / 26 - 1) != -1);
+
+		return str;
 	}
 
 }

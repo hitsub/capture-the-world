@@ -4,6 +4,7 @@ using UnityStandardAssets.CrossPlatformInput;
 using UnityStandardAssets.Utility;
 using Random = UnityEngine.Random;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace UnityStandardAssets.Characters.FirstPerson
 {
@@ -18,7 +19,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private float m_JumpSpeed;
         [SerializeField] private float m_StickToGroundForce;
         [SerializeField] private float m_GravityMultiplier;
-        [SerializeField] private MouseLook m_MouseLook;
+        [SerializeField] private Look m_MouseLook;
         [SerializeField] private bool m_UseFovKick;
         [SerializeField] private FOVKick m_FovKick = new FOVKick();
         [SerializeField] private bool m_UseHeadBob;
@@ -50,8 +51,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
 		private Rigidbody rigid;
 		private Manager manager;
 
-		[SerializeField] PlayerData pData;
+		PlayerData pData;
 		[SerializeField] int playerNum;
+		public FlagType flagColor;
+		[SerializeField] InputType inputType;
 
 		ShotAreaTrigger shotArea;
 
@@ -67,8 +70,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Use this for initialization
         private void Start()
         {
+			pData = GameObject.Find ("PlayerData").GetComponent<PlayerData> ();
+
             m_CharacterController = GetComponent<CharacterController>();
-            m_Camera = Camera.main;
+			m_Camera = transform.FindChild("FirstPersonCharacter").gameObject.GetComponent<Camera>();
             m_OriginalCameraPosition = m_Camera.transform.localPosition;
             m_FovKick.Setup(m_Camera);
             m_HeadBob.Setup(m_Camera, m_StepInterval);
@@ -102,21 +107,35 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Update is called once per frame
         private void Update()
         {
-            RotateView();
+			if (!manager.isStart)
+				return;
+			if (manager.isEndGame) {
+				if (GlobalInput.Convert ("fire", inputType)) {
+					Destroy (GameObject.Find ("PlayerData"));
+					SceneManager.LoadScene ("Start");
+				}
+				return;
+			}
+
+			//視線操作
+			m_MouseLook.LookRotation (transform, m_Camera.transform, inputType);
+
             // the jump state needs to read here to make sure it is not missed
 			//ジャンプフラグ
-            if (!m_Jump)
-                m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
+			if (!m_Jump)
+				m_Jump = GlobalInput.Convert ("jump", inputType, InputKind.Down);
+                //m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
 			//ブーストフラグ
-			m_Boost = (CrossPlatformInputManager.GetButton ("Jump") && (Energy > 0));
+			m_Boost = (GlobalInput.Convert ("jump", inputType) &&  (Energy > 0));
+			//m_Boost = (CrossPlatformInputManager.GetButton ("Jump") && (Energy > 0));
 			if (m_Boost && !(Jet.isPlaying))
-				Jet.Play ();
+				//Jet.Play ();
 			if (!m_Boost)
-				Jet.Stop ();
+				//Jet.Stop ();
 
 			if (!m_PreviouslyGrounded && m_CharacterController.isGrounded){
                 StartCoroutine(m_JumpBob.DoBobCycle());
-                PlayLandingSound();
+                //PlayLandingSound();
                 m_MoveDir.y = 0f;
                 m_Jumping = false;
             }
@@ -126,14 +145,19 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
 
-
-			if (Input.GetKey (KeyCode.Mouse0) && shotArea.isShot) {
+			//エネルギー注入
+			if (GlobalInput.Convert("fire", inputType) && shotArea.isShot && Energy >= pData.Damage [playerNum]) {
 				shootCoolTime += 1f * Time.deltaTime;
 				if (shootCoolTime >= 60f / pData.FireRate [playerNum]) {
 					shootCoolTime = 0;
 					InjectResult res = shotArea.col.gameObject.transform.parent.gameObject.GetComponent<CrystalScript> ().InjectEnergy (pData.Damage [playerNum], side);
+					//注入成功したら(敵と競合しなかったら)判定
 					if (res.Result)
 						Energy -= pData.Damage [playerNum];
+					if (res.Capture || res.Destroy) {
+						Energy += 200;
+						manager.GetScore (10, side);
+					}
 				}
 			}
 
@@ -142,6 +166,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 				Energy -= (pData.Mileage [playerNum] * Time.deltaTime);
 			if (!m_IsWalking)
 				Energy -= 0.7f * (pData.Mileage [playerNum] * Time.deltaTime);
+			
 			//エネルギー自然回復
 			if (m_IsWalking && !m_Boost)
 				nonActiveTime += 1f * Time.deltaTime;
@@ -168,17 +193,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void FixedUpdate()
         {
+			if ((!manager.isStart) || (manager.isEndGame))
+				return;
+
             float speed;
 			GetInput(out speed);
-			int adjust = 0;
-			if (m_Input.x == 0 && m_Input.y == 0) {
-				if (Input.GetKey (KeyCode.LeftShift))
-					adjust = -10;
-				else
-					adjust = -3;
-			}
 
-			textSpeed.text = (adjust + (int)Mathf.Sqrt (Mathf.Pow (speed, 2) + Mathf.Pow (m_MoveDir.y, 2))).ToString();
             // always move along the camera forward as it is the direction that it being aimed at
             Vector3 desiredMove = transform.forward*m_Input.y + transform.right*m_Input.x;
 
@@ -199,7 +219,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 if (m_Jump)
                 {
                     m_MoveDir.y = m_JumpSpeed;
-                    PlayJumpSound();
+                    //PlayJumpSound();
                     m_Jump = false;
                     m_Jumping = true;
                 }
@@ -222,7 +242,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 			if (col.gameObject.tag == "Crystal") {
 				manager.CatchCrystal ();
 				col.gameObject.transform.parent.gameObject.GetComponent<CrystalScript> ().Kill ();
-				SE.Play ();
+				//SE.Play ();
 
 			}
 		}
@@ -249,7 +269,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             m_NextStep = m_StepCycle + m_StepInterval;
 
-            PlayFootStepAudio();
+            //PlayFootStepAudio();
         }
 
 
@@ -297,18 +317,19 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void GetInput(out float speed)
         {
             // Read input
-            float horizontal = CrossPlatformInputManager.GetAxis("Horizontal");
-            float vertical = CrossPlatformInputManager.GetAxis("Vertical");
+			float horizontal = GlobalInput.Axis("MoveHorizontal", inputType);
+			float vertical = GlobalInput.Axis("MoveVertical", inputType);
 
             bool waswalking = m_IsWalking;
 
 #if !MOBILE_INPUT
             // On standalone builds, walk/run speed is modified by a key press.
             // keep track of whether or not the character is walking or running
-            m_IsWalking = !Input.GetKey(KeyCode.LeftShift);
+			m_IsWalking = !GlobalInput.Convert("boost", inputType);
+
 #endif
             // set the desired speed to be walking or running
-            speed = m_IsWalking ? m_WalkSpeed : m_RunSpeed;
+			speed = m_IsWalking ? m_WalkSpeed :(Energy >50) ? m_RunSpeed : m_WalkSpeed;
             m_Input = new Vector2(horizontal, vertical);
 
             // normalize input if it exceeds 1 in combined length:
@@ -329,7 +350,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void RotateView()
         {
-            m_MouseLook.LookRotation (transform, m_Camera.transform);
+//            m_MouseLook.LookRotation (transform, m_Camera.transform);
         }
 
 
