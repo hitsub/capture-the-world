@@ -19,7 +19,7 @@
         "Recovery":10,
 		"WalkRecoveryBonus":2,
         "Damage":200,
-        "FireRate":5
+        "FireRate":20
     },
 	"Charger":{
         "Energy":2500,

@@ -14,6 +14,7 @@ public class PlayerData : MonoBehaviour {
 	public int[] Damage;
 	public int[] FireRate;
 	public FlagType[] Team;
+	public InputType[] inputType;
 
 	// Use this for initialization
 	void Awake () {
@@ -28,6 +29,7 @@ public class PlayerData : MonoBehaviour {
 		FireRate = new int[] { 200, 200 };
 
 		Team = new FlagType[]{ FlagType.Blue, FlagType.Green };
+		inputType = new InputType[]{ InputType.Keyboard, InputType.DualShock4OnMac };
 
 		DontDestroyOnLoad (this.gameObject);
 	}

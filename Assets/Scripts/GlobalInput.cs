@@ -10,7 +10,9 @@ public enum InputType{
 	DualShock4OnWindows,
 	DualShock3OnWindows,
 	DualShock4OnMac,
-	DualShock3OnMac
+	DualShock3OnMac,
+	DualShock2viaELECOM,
+	XBOX360
 }
 
 //入力管理クラス
@@ -23,10 +25,29 @@ static public class GlobalInput{
 		if (name == "fire") {
 			if (type == InputType.Keyboard) return Input.GetKey (KeyCode.Mouse0);
 			if (type == InputType.DualShock4OnWindows) return (Input.GetKey (KeyCode.JoystickButton4) || Input.GetKey (KeyCode.JoystickButton5));
+			if (type == InputType.DualShock4OnMac) return (Input.GetKey (KeyCode.JoystickButton4) || Input.GetKey (KeyCode.JoystickButton5));
+			if (type == InputType.DualShock3OnWindows) return (Input.GetKey (KeyCode.JoystickButton10) || Input.GetKey (KeyCode.JoystickButton11));
+			if (type == InputType.DualShock3OnMac) return (Input.GetKey (KeyCode.JoystickButton10) || Input.GetKey (KeyCode.JoystickButton11));
+			if (type == InputType.DualShock2viaELECOM) return (Input.GetKey (KeyCode.JoystickButton6) || Input.GetKey (KeyCode.JoystickButton7));
+			if (type == InputType.XBOX360) return (Input.GetKey (KeyCode.JoystickButton4) || Input.GetKey (KeyCode.JoystickButton5));
 		}
 		if (name == "boost") {
 			if (type == InputType.Keyboard) return Input.GetKey (KeyCode.LeftShift);
 			if (type == InputType.DualShock4OnWindows) return Input.GetKey (KeyCode.JoystickButton10);
+			if (type == InputType.DualShock4OnMac) return Input.GetKey (KeyCode.JoystickButton10);
+			if (type == InputType.DualShock3OnWindows) return Input.GetKey (KeyCode.JoystickButton1);
+			if (type == InputType.DualShock3OnMac) return Input.GetKey (KeyCode.JoystickButton1);
+			if (type == InputType.DualShock2viaELECOM) return Input.GetKey (KeyCode.JoystickButton10);
+			if (type == InputType.XBOX360) return Input.GetKey (KeyCode.JoystickButton8);
+		}
+		if (name == "cancel") {
+			if (type == InputType.Keyboard) return Input.GetKey (KeyCode.Escape);
+			if (type == InputType.DualShock4OnWindows) return Input.GetKey (KeyCode.JoystickButton2);
+			if (type == InputType.DualShock4OnMac) return Input.GetKey (KeyCode.JoystickButton2);
+			if (type == InputType.DualShock3OnWindows) return Input.GetKey (KeyCode.JoystickButton13);
+			if (type == InputType.DualShock3OnMac) return Input.GetKey (KeyCode.JoystickButton13);
+			if (type == InputType.DualShock2viaELECOM) return Input.GetKey (KeyCode.JoystickButton1);
+			if (type == InputType.XBOX360) return Input.GetKey (KeyCode.JoystickButton1);
 		}
 		if (name == "jump") {
 			if (type == InputType.Keyboard) {
@@ -36,8 +57,47 @@ static public class GlobalInput{
 					return Input.GetKeyDown (KeyCode.Space);
 			}
 			if (type == InputType.DualShock4OnWindows) return Input.GetKey (KeyCode.JoystickButton1);
+			if (type == InputType.DualShock4OnMac) return Input.GetKey (KeyCode.JoystickButton1);
+			if (type == InputType.DualShock3OnWindows) return Input.GetKey (KeyCode.JoystickButton14);
+			if (type == InputType.DualShock3OnMac) return Input.GetKey (KeyCode.JoystickButton14);
+			if (type == InputType.DualShock2viaELECOM) return Input.GetKey (KeyCode.JoystickButton2);
+			if (type == InputType.XBOX360) return Input.GetKey (KeyCode.JoystickButton0);
+		}
+		if (name == "decide") {
+			if (type == InputType.Keyboard) return Input.GetKeyDown (KeyCode.Return);
+			if (type == InputType.DualShock4OnWindows) return Input.GetKeyDown (KeyCode.JoystickButton1);
+			if (type == InputType.DualShock4OnMac) return Input.GetKeyDown (KeyCode.JoystickButton1);
+			if (type == InputType.DualShock3OnWindows) return Input.GetKeyDown (KeyCode.JoystickButton14);
+			if (type == InputType.DualShock3OnMac) return Input.GetKeyDown (KeyCode.JoystickButton14);
+			if (type == InputType.DualShock2viaELECOM) return Input.GetKeyDown (KeyCode.JoystickButton2);
+			if (type == InputType.XBOX360) return Input.GetKeyDown (KeyCode.JoystickButton0);
 		}
 		return false;
+	}
+	static public float Arrow(string name, InputType type){
+		if (name == "up") {
+			if (type == InputType.Keyboard) {
+				if (Input.GetKey(KeyCode.UpArrow)) return -1f;
+			}
+			if (type == InputType.DualShock4OnWindows) return Input.GetAxis ("Axis8")*(-1f);
+			if (type == InputType.DualShock4OnMac) return Input.GetAxis ("Axis8");
+			//if (type == InputType.DualShock3OnWindows) return Input.GetAxis ("Axis1");
+			if (type == InputType.DualShock3OnMac) return (Input.GetKey (KeyCode.JoystickButton4)) ? -1f : 0;
+			if (type == InputType.DualShock2viaELECOM) return Input.GetAxis ("Axis6")*(-1f);
+			if (type == InputType.XBOX360) return Input.GetAxis ("Axis7")*(-1f);
+		}
+		if (name == "down") {
+			if (type == InputType.Keyboard) {
+				if (Input.GetKey(KeyCode.DownArrow)) return 1f;
+			}
+			if (type == InputType.DualShock4OnWindows) return Input.GetAxis ("Axis8")*(-1f);
+			if (type == InputType.DualShock4OnMac) return Input.GetAxis ("Axis8");
+			//if (type == InputType.DualShock3OnWindows) return Input.GetAxis ("Axis1");
+			if (type == InputType.DualShock3OnMac) return (Input.GetKey (KeyCode.JoystickButton6)) ? -1f : 0;
+			if (type == InputType.DualShock2viaELECOM) return Input.GetAxis ("Axis6")*(-1f);
+			if (type == InputType.XBOX360) return Input.GetAxis ("Axis7")*(-1f);
+		}
+		return 0;
 	}
 	//軸取得
 	static public float Axis(string name, InputType type){
@@ -47,6 +107,11 @@ static public class GlobalInput{
 				if (Input.GetKey(KeyCode.A)) return -1f;
 			}
 			if (type == InputType.DualShock4OnWindows) return Input.GetAxis ("Axis1");
+			if (type == InputType.DualShock4OnMac) return Input.GetAxis ("Axis1");
+			if (type == InputType.DualShock3OnWindows) return Input.GetAxis ("Axis1");
+			if (type == InputType.DualShock3OnMac) return Input.GetAxis ("Axis1");
+			if (type == InputType.DualShock2viaELECOM) return Input.GetAxis ("Axis1");
+			if (type == InputType.XBOX360) return Input.GetAxis ("Axis1");
 		}
 		if (name =="MoveVertical"){
 			if (type == InputType.Keyboard) {
@@ -54,14 +119,25 @@ static public class GlobalInput{
 				if (Input.GetKey(KeyCode.S)) return -1f;
 			}
 			if (type == InputType.DualShock4OnWindows) return Input.GetAxis ("Axis2");
+			if (type == InputType.DualShock4OnMac) return Input.GetAxis ("Axis2");
+			if (type == InputType.DualShock3OnWindows) return Input.GetAxis ("Axis2");
+			if (type == InputType.DualShock3OnMac) return Input.GetAxis ("Axis2");
+			if (type == InputType.DualShock2viaELECOM) return Input.GetAxis ("Axis2");
+			if (type == InputType.XBOX360) return Input.GetAxis ("Axis2");
 		}
 		if (name =="EyeHorizontal"){
 			if (type == InputType.Keyboard) return Input.GetAxis ("Mouse X");
 			if (type == InputType.DualShock4OnWindows) return Input.GetAxis ("Axis3");
+			if (type == InputType.DualShock4OnMac) return Input.GetAxis ("Axis3");
 		}
 		if (name =="EyeVertical"){
 			if (type == InputType.Keyboard) return Input.GetAxis ("Mouse Y");
 			if (type == InputType.DualShock4OnWindows) return Input.GetAxis ("Axis6");
+			if (type == InputType.DualShock4OnMac) return Input.GetAxis ("Axis4");
+			if (type == InputType.DualShock3OnWindows) return Input.GetAxis ("Axis4");
+			if (type == InputType.DualShock3OnMac) return Input.GetAxis ("Axis4");
+			if (type == InputType.DualShock2viaELECOM) return Input.GetAxis ("Axis4");
+			if (type == InputType.XBOX360) return Input.GetAxis ("Axis5");
 		}
 		return 0;
 	}

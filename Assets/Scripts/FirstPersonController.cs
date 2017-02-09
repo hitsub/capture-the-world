@@ -54,7 +54,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 		PlayerData pData;
 		[SerializeField] int playerNum;
 		public FlagType flagColor;
-		[SerializeField] InputType inputType;
+		InputType inputType;
 
 		ShotAreaTrigger shotArea;
 
@@ -98,6 +98,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 			Damage = pData.Damage [playerNum];
 			FireRate = pData.FireRate [playerNum];
 			side = pData.Team [playerNum];
+			inputType = pData.inputType [playerNum];
 
 			shootCoolTime = 60f / pData.FireRate [playerNum];
 
