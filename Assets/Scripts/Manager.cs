@@ -89,7 +89,8 @@ public class Manager : MonoBehaviour {
 		//開始前
 		if (!isStart) {
 			isStartTimer -= 1f * Time.deltaTime;
-			ReadyTimer.text = isStartTimer.ToString("F1");
+			if (ReadyTimer)
+				ReadyTimer.text = isStartTimer.ToString("F1");
 			if (isStartTimer <= 0) {
 				isStart = true;
 				Destroy (GameObject.Find ("ReadyPanel"));
