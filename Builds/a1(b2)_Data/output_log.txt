@@ -1,0 +1,52 @@
+Initialize engine version: 5.5.1f1 (88d00a7498cd)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce GTX 960 (ID=0x1401)
+    Vendor:   NVIDIA
+    VRAM:     2016 MB
+    Driver:   21.21.13.7878
+Begin MonoManager ReloadAssembly
+Platform assembly: D:\Unity\capture-the-world\Builds\a1(b2)_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading D:\Unity\capture-the-world\Builds\a1(b2)_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: D:\Unity\capture-the-world\Builds\a1(b2)_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading D:\Unity\capture-the-world\Builds\a1(b2)_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: D:\Unity\capture-the-world\Builds\a1(b2)_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading D:\Unity\capture-the-world\Builds\a1(b2)_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: D:\Unity\capture-the-world\Builds\a1(b2)_Data\Managed\Assembly-UnityScript.dll (this message is harmless)
+Loading D:\Unity\capture-the-world\Builds\a1(b2)_Data\Managed\Assembly-UnityScript.dll into Unity Child Domain
+Platform assembly: D:\Unity\capture-the-world\Builds\a1(b2)_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading D:\Unity\capture-the-world\Builds\a1(b2)_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: D:\Unity\capture-the-world\Builds\a1(b2)_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading D:\Unity\capture-the-world\Builds\a1(b2)_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: D:\Unity\capture-the-world\Builds\a1(b2)_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
+Loading D:\Unity\capture-the-world\Builds\a1(b2)_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
+- Completed reload, in  0.026 seconds
+Platform assembly: D:\Unity\capture-the-world\Builds\a1(b2)_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: D:\Unity\capture-the-world\Builds\a1(b2)_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+UnloadTime: 1.236129 ms
+Setting up 2 worker threads for Enlighten.
+  Thread -> id: 27dc -> priority: 1 
+  Thread -> id: 3cb0 -> priority: 1 
+Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 3.313572 ms
+
+Unloading 23 unused Assets to reduce memory usage. Loaded Objects now: 16541.
+Total: 2.348766 ms (FindLiveObjects: 0.629482 ms CreateObjectMapping: 0.350947 ms MarkObjects: 1.275791 ms  DeleteObjects: 0.088337 ms)
+
+Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 9.308230 ms
+
+Unloading 3071 unused Assets to reduce memory usage. Loaded Objects now: 2389.
+Total: 8.168551 ms (FindLiveObjects: 0.216638 ms CreateObjectMapping: 0.228656 ms MarkObjects: 0.442290 ms  DeleteObjects: 7.279763 ms)
+
+Unloading 3 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.944975 ms
+
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 2392.
+Total: 0.629783 ms (FindLiveObjects: 0.165558 ms CreateObjectMapping: 0.061295 ms MarkObjects: 0.396919 ms  DeleteObjects: 0.005107 ms)
+

@@ -46,7 +46,7 @@ public class ScreenSelect : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
+		Cursor.visible = true;
 		pData = GameObject.Find ("PlayerData").GetComponent<PlayerData> ();
 		//TextAsset text = Resources.Load ("class") as TextAsset;
 		json = JsonNode.Parse (Resources.Load <TextAsset>("class").text);
@@ -177,6 +177,7 @@ public class ScreenSelect : MonoBehaviour {
 		}
 		if (!p1SelectFlag && !p2SelectFlag) {
 			SetStatus ();
+			Cursor.visible = false;
 			SceneManager.LoadScene ("Split");
 		}
 	}

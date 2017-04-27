@@ -45,10 +45,11 @@ public class Player{
 }
 
 //クリスタルステータスクラス
+/*
 public class Crystal{
 	FlagType crystalColor = FlagType.None;
 	FlagType guageColor = FlagType.None;
 	int Captures = 0;
 	int[] Energy = new int[8];
 }
-
+*/
