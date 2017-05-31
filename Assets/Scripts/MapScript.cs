@@ -47,7 +47,7 @@ public class MapScript : MonoBehaviour {
 			Vector3 crystalMapPos = new Vector3 (size.x * (crystalPos.x / real.x) - size.x / 2, size.y * (crystalPos.z / real.y) - size.y / 2, 0);
 			tmp.GetComponent<RectTransform> ().anchoredPosition = new Vector3 (-crystalMapPos.x, -crystalMapPos.y, 0);
 			tmp.transform.localScale = new Vector3 (0.8f, 0.8f, 0.8f);
-			tmp.transform.FindChild ("Text").gameObject.GetComponent<Text> ().text = GetStringName (i);
+			tmp.transform.Find ("Text").gameObject.GetComponent<Text> ().text = GetStringName (i);
 			rectMapCrystals [i] = tmp.GetComponent<RectTransform> ();
 			imageMapCrystals [i] = tmp.GetComponent<Image> ();
 		}

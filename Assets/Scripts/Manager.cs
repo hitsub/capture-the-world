@@ -41,7 +41,7 @@ public class Manager : MonoBehaviour {
 	Text ReadyTimer;
 	// Use this for initialization
 	void Start () {
-		ReadyTimer = GameObject.Find ("ReadyPanel").transform.FindChild ("Timer").gameObject.GetComponent<Text> ();
+		ReadyTimer = GameObject.Find ("ReadyPanel").transform.Find ("Timer").gameObject.GetComponent<Text> ();
 
 		//JSONの読み込み
 		TextAsset text = Resources.Load ("map") as TextAsset;
@@ -68,7 +68,7 @@ public class Manager : MonoBehaviour {
 			uitmp.transform.SetParent (UIparent.transform);
 			uitmp.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (-84 + 24 * i, 0);
 			uitmp.GetComponent<RectTransform> ().localScale = new Vector2 (0.3f, 0.3f);
-			uitmp.transform.FindChild ("Text").gameObject.GetComponent<Text> ().text = GetColumnName (i);
+			uitmp.transform.Find ("Text").gameObject.GetComponent<Text> ().text = GetColumnName (i);
 			UICrystals [i] = uitmp.GetComponent<Image> ();
 
 		}
@@ -120,8 +120,8 @@ public class Manager : MonoBehaviour {
 			isEndGame = true;
 			GameObject resPanel = Instantiate (Resources.Load<GameObject> ("Prefabs/ResultPanel"), GameObject.Find("UICanvas").transform);
 			resPanel.GetComponent<RectTransform> ().anchoredPosition = new Vector2 (0, 0);
-			resPanel.transform.FindChild ("Score").gameObject.GetComponent<Text> ().text = score [0].ToString () + " - " + score [1].ToString ();
-			resPanel.transform.FindChild ("ResultText").gameObject.GetComponent<Text> ().text = (score[0]>score[1])?"Blue Won!":(score[0]==score[1])?"DRAW":"Green Won!";
+			resPanel.transform.Find ("Score").gameObject.GetComponent<Text> ().text = score [0].ToString () + " - " + score [1].ToString ();
+			resPanel.transform.Find ("ResultText").gameObject.GetComponent<Text> ().text = (score[0]>score[1])?"Blue Won!":(score[0]==score[1])?"DRAW":"Green Won!";
 		}
 	}
 

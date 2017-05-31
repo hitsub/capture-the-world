@@ -73,7 +73,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 			pData = GameObject.Find ("PlayerData").GetComponent<PlayerData> ();
 
             m_CharacterController = GetComponent<CharacterController>();
-			m_Camera = transform.FindChild("FirstPersonCharacter").gameObject.GetComponent<Camera>();
+			m_Camera = transform.Find("FirstPersonCharacter").gameObject.GetComponent<Camera>();
             m_OriginalCameraPosition = m_Camera.transform.localPosition;
             m_FovKick.Setup(m_Camera);
             m_HeadBob.Setup(m_Camera, m_StepInterval);
@@ -84,7 +84,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
 			rigid = this.gameObject.GetComponent<Rigidbody> ();
 			manager = GameObject.Find("Manager").GetComponent<Manager>();
-			shotArea = transform.FindChild ("ShotArea").gameObject.GetComponent<ShotAreaTrigger> ();
+			shotArea = transform.Find ("ShotArea").gameObject.GetComponent<ShotAreaTrigger> ();
 
 			//ステータス初期化
 			Energy = pData.energy [playerNum];

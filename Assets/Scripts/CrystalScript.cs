@@ -55,20 +55,20 @@ public class CrystalScript : MonoBehaviour {
 			name.name = "C:" + this.gameObject.name;
 			rect[i] = name.GetComponent<RectTransform> ();
 			imagePanel[i] = name.GetComponent<Image> ();
-			imageGuage[i] = name.transform.FindChild ("Guage").gameObject.GetComponent<Image> ();
-			imageGuageBG[i] = name.transform.FindChild ("GuageBG").gameObject.GetComponent<Image> ();
-			textCrystalName[i] = name.transform.FindChild ("Name").gameObject.GetComponent<Text> ();
-			textDistance[i] = name.transform.FindChild ("Distance").gameObject.GetComponent<Text> ();
+			imageGuage[i] = name.transform.Find ("Guage").gameObject.GetComponent<Image> ();
+			imageGuageBG[i] = name.transform.Find ("GuageBG").gameObject.GetComponent<Image> ();
+			textCrystalName[i] = name.transform.Find ("Name").gameObject.GetComponent<Text> ();
+			textDistance[i] = name.transform.Find ("Distance").gameObject.GetComponent<Text> ();
 			textCrystalName[i].text = this.gameObject.name;
 			imagePanel[i].enabled = false;
 			ready[i] = true;
 		}
 
 		//色変更用
-		Body = transform.FindChild ("BodyParent/Body").gameObject.GetComponent<Renderer>();
-		CoreGlow = transform.FindChild ("Domain/CoreGlow").gameObject.GetComponent<ParticleSystem>();
-		Tail = transform.FindChild ("Domain/Tail").gameObject.GetComponent<ParticleSystem>();
-		Burner = transform.FindChild ("Burner").gameObject.GetComponent<ParticleSystem>();
+		Body = transform.Find ("BodyParent/Body").gameObject.GetComponent<Renderer>();
+		CoreGlow = transform.Find ("Domain/CoreGlow").gameObject.GetComponent<ParticleSystem>();
+		Tail = transform.Find ("Domain/Tail").gameObject.GetComponent<ParticleSystem>();
+		Burner = transform.Find ("Burner").gameObject.GetComponent<ParticleSystem>();
 
 	}
 	// Update is called once per frame
