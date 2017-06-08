@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 48bd853444c98bf458ac06789f810ddb
-timeCreated: 1491396362
+timeCreated: 1496909515
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -99,10 +99,10 @@ TextureImporter:
       name: logo_0
       rect:
         serializedVersion: 2
-        x: 154
-        y: 33
-        width: 480
-        height: 130
+        x: 137
+        y: 189
+        width: 737
+        height: 619
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -112,10 +112,10 @@ TextureImporter:
       name: logo_1
       rect:
         serializedVersion: 2
-        x: 40
-        y: 166
-        width: 728
-        height: 615
+        x: 246
+        y: 60
+        width: 517
+        height: 127
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

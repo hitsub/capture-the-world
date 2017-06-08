@@ -3,15 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ScreenTitle : MonoBehaviour {
+	[SerializeField] Fade fade = null;
 
-	// Use this for initialization
-	void Start () {
-		
+	void Start() {
+		fade.FadeIn (0, () =>
+			{
+				fade.FadeOut(1.5f);
+			});
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
-		
+		if (Input.anyKey) {
+			fade.FadeIn (1, () =>
+				{
+					fade.FadeOut(1);
+				});
+		}
 	}
 
 	void SetLogoScale(float value){

@@ -88,6 +88,7 @@ public class Fade : MonoBehaviour
 	public Coroutine FadeOut (float time, System.Action action)
 	{
 		StopAllCoroutines ();
+		fade.ChangeMaskTexture (1);
 		return StartCoroutine (FadeoutCoroutine (time, action));
 	}
 
@@ -99,6 +100,7 @@ public class Fade : MonoBehaviour
 	public Coroutine FadeIn (float time, System.Action action)
 	{
 		StopAllCoroutines ();
+		fade.ChangeMaskTexture (0);
 		return StartCoroutine (FadeinCoroutine (time, action));
 	}
 

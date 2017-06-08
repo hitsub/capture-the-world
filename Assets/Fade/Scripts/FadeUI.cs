@@ -29,6 +29,8 @@ using UnityEngine.UI;
 public class FadeUI : MonoBehaviour, IFade
 {
 
+	[SerializeField]
+	private Texture[] maskSources;
 	[SerializeField, Range (0, 1)]
 	private float cutoutRange;
 
@@ -56,5 +58,10 @@ public class FadeUI : MonoBehaviour, IFade
 		var mask = GetComponent<Mask> ();
 		mask.enabled = false;
 		mask.enabled = true;
+	}
+
+	public void ChangeMaskTexture (int num)
+	{
+		texture = maskSources [num];
 	}
 }

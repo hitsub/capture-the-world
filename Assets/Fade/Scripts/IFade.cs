@@ -26,5 +26,6 @@ using System.Collections;
 public interface IFade  
 {
 	float Range{get; set;}
+	void ChangeMaskTexture (int num);
 }
 

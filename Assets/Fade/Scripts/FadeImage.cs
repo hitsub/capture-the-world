@@ -26,8 +26,8 @@ using UnityEngine.UI;
 
 public class FadeImage : UnityEngine.UI.Graphic , IFade
 {
-	[SerializeField]
-	private Texture maskTexture = null;
+	[SerializeField]private Texture[] maskSources;
+	[SerializeField]private Texture maskTexture = null;
 
 	[SerializeField, Range (0, 1)]
 	private float cutoutRange;
@@ -62,6 +62,11 @@ public class FadeImage : UnityEngine.UI.Graphic , IFade
 	{
 		material.SetTexture ("_MaskTex", texture);
 		material.SetColor ("_Color", color);
+	}
+
+	public void ChangeMaskTexture (int num)
+	{
+		maskTexture = maskSources [num];
 	}
 
 	#if UNITY_EDITOR
