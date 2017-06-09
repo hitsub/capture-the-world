@@ -34,7 +34,7 @@ public class Fade : MonoBehaviour
 		fade.Range = cutoutRange;
 	}
 
-	float cutoutRange;
+	float cutoutRange = 1f;
 
 	void Init ()
 	{
@@ -94,6 +94,7 @@ public class Fade : MonoBehaviour
 
 	public Coroutine FadeOut (float time)
 	{
+		fade.ChangeMaskTexture (1);
 		return FadeOut (time, null);
 	}
 
@@ -106,6 +107,7 @@ public class Fade : MonoBehaviour
 
 	public Coroutine FadeIn (float time)
 	{
+		fade.ChangeMaskTexture (0);
 		return FadeIn (time, null);
 	}
 }

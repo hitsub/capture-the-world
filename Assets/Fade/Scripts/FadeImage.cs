@@ -68,7 +68,7 @@ public class FadeImage : UnityEngine.UI.Graphic , IFade
 	{
 		maskTexture = maskSources [num];
 	}
-
+		
 	#if UNITY_EDITOR
 	protected override void OnValidate ()
 	{
